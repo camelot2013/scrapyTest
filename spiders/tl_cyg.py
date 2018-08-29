@@ -13,8 +13,9 @@ sexdict = {0: u'女', 1: u'男'}
 class TlCygSpider(scrapy.Spider):
     name = 'tl.cyg'
     allowed_domains = ['tl.cyg.changyou.com']
-    start_urls = [
-        'http://tl.cyg.changyou.com/?area_name=%25E8%2587%25B3%25E5%25B0%258A%25E7%2594%25B5%25E4%25BF%25A1&world_id=3079&world_name=%25E9%259B%25AA%25E8%2588%259E%25E7%2587%2583%25E6%2583%2585#goodsTag']
+    start_urls = ['http://tl.cyg.changyou.com/goods/selling']
+    # start_urls = [
+    #     'http://tl.cyg.changyou.com/?area_name=%25E8%2587%25B3%25E5%25B0%258A%25E7%2594%25B5%25E4%25BF%25A1&world_id=3079&world_name=%25E9%259B%25AA%25E8%2588%259E%25E7%2587%2583%25E6%2583%2585#goodsTag']
     url_set = set()
     __conn = sqlite3.connect('scrapyTest/roleinfo.sqlite')
     __c = __conn.cursor()
@@ -25,6 +26,7 @@ class TlCygSpider(scrapy.Spider):
     def detail_parse(self, response):
         goodsinfo = response.css('div.goods-info .info-list .ui-money-color::text').extract()[0]
         item = TlCygItem()
+        item['url'] = response.url
         item['price'] = re.findall('\d+', goodsinfo)[0]
 
         scriptinfo = response.css('script')
@@ -36,15 +38,18 @@ class TlCygSpider(scrapy.Spider):
         for column in TlCygSpider.col_name_list:
             if column in pjson:
                 item[column] = pjson[column]
-        # if 'items' in pjson:
-        #     items = pjson['items']
-        #     if 'equip' in items:
-        #         equip = items['equip']
-        #         if '15' in equip:
-        #             wuhun = equip['15']
-        #             growRate = re.findall('\d+', wuhun['growRate'])[0]
-        #             compandLevel = wuhun['compandLevel']
-        #             wuHunExtLanNum = wuhun['wuHunExtLanNum']
+        item['wh_growRate'] = 0
+        item['wh_compandLevel'] = ''
+        item['wg_wuHunExtLanNum'] = ''
+        if 'items' in pjson:
+            items = pjson['items']
+            if 'equip' in items:
+                equip = items['equip']
+                if '15' in equip:
+                    wuhun = equip['15']
+                    item['wh_growRate'] = re.findall('\d+', wuhun['growRate'])[0]
+                    item['wh_compandLevel'] = wuhun['compandLevel']
+                    item['wg_wuHunExtLanNum'] = wuhun['wuHunExtLanNum']
 
         yield item
 

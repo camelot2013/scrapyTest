@@ -14,12 +14,33 @@ class ScrapytestPipeline(object):
         col_name_list = spider.col_name_list
         valuelist = []
         paramlist = []
-        for column in col_name_list: #python2.7的list对象没有copy方法,用遍历的方式生成副本list
+        for column in col_name_list:
             valuelist.append('?')
             paramlist.append(item[column])
         valuestr = ",".join(valuelist)
         columnstr = ",".join(col_name_list)
-        insql = "INSERT INTO cyg_roleinfo ({}) VALUES ({})".format(columnstr,valuestr)
-        c.execute(insql,paramlist)
+        # sqlstr = "select url from cyg_roleinfo where url = ?"
+        # c.execute(sqlstr, (item['url'],))
+        # url = c.fetchall()
+        # if url:
+        #     #UPDATE的规则还没想好
+        #     # print url
+        #     updsql = "UPDATE cyg_roleinfo SET "
+        #     delimiter=""
+        #     for column in col_name_list:
+        #         updsql += delimiter
+        #         updsql += column+"=?"
+        #         delimiter=" , "
+        #     if delimiter:
+        #         updsql +=" where url=?"
+        #         paramlist.append(item['url'])
+        #         c.execute(updsql,paramlist)
+        #         conn.commit()
+        # else:
+        #     insql = "INSERT INTO cyg_roleinfo ({}) VALUES ({})".format(columnstr, valuestr)
+        #     c.execute(insql, paramlist)
+        #     conn.commit()
+        insql = "INSERT INTO cyg_roleinfo ({}) VALUES ({})".format(columnstr, valuestr)
+        c.execute(insql, paramlist)
         conn.commit()
         conn.close()

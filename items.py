@@ -11,6 +11,7 @@ import scrapy
 class TlCygItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    url = scrapy.Field()
     charName = scrapy.Field()
     sex = scrapy.Field()
     menpai = scrapy.Field()
@@ -63,3 +64,6 @@ class TlCygItem(scrapy.Item):
     resistPostionDefLimit = scrapy.Field()
     chuanCiShangHai = scrapy.Field()
     chuanCiJianMian = scrapy.Field()
+    wh_growRate = scrapy.Field()
+    wh_compandLevel = scrapy.Field()
+    wg_wuHunExtLanNum = scrapy.Field()
