@@ -36,15 +36,15 @@ class TlCygSpider(scrapy.Spider):
         for column in TlCygSpider.col_name_list:
             if column in pjson:
                 item[column] = pjson[column]
-        if 'items' in pjson:
-            items = pjson['items']
-            if 'equip' in items:
-                equip = items['equip']
-                if '15' in equip:
-                    wuhun = equip['15']
-                    growRate = re.findall('\d+', wuhun['growRate'])[0]
-                    compandLevel = wuhun['compandLevel']
-                    wuHunExtLanNum = wuhun['wuHunExtLanNum']
+        # if 'items' in pjson:
+        #     items = pjson['items']
+        #     if 'equip' in items:
+        #         equip = items['equip']
+        #         if '15' in equip:
+        #             wuhun = equip['15']
+        #             growRate = re.findall('\d+', wuhun['growRate'])[0]
+        #             compandLevel = wuhun['compandLevel']
+        #             wuHunExtLanNum = wuhun['wuHunExtLanNum']
 
         yield item
 
