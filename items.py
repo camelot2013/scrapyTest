@@ -64,6 +64,10 @@ class TlCygItem(scrapy.Item):
     resistPostionDefLimit = scrapy.Field()
     chuanCiShangHai = scrapy.Field()
     chuanCiJianMian = scrapy.Field()
-    wh_growRate = scrapy.Field()
-    wh_compandLevel = scrapy.Field()
-    wg_wuHunExtLanNum = scrapy.Field()
+
+
+class equipWuHun(scrapy.Item):
+    url = scrapy.Field()
+    growRate = scrapy.Field()
+    compandLevel = scrapy.Field()
+    wuHunExtLanNum = scrapy.Field()
